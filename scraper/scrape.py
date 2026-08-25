@@ -1,3 +1,4 @@
+import re
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
@@ -38,3 +39,35 @@ def crawl_outlet(config, fetch_fn):
         if len(collected) >= config["target_count"]:
             break
     return list(collected.values())[: config["target_count"]]
+
+
+def extract_sitemap_urls(sitemap_xml, url_filter):
+    urls = re.findall(r"<loc>(.*?)</loc>", sitemap_xml)
+    return [u for u in urls if url_filter in u]
+
+
+def extract_single_headline(html, headline_selector):
+    soup = BeautifulSoup(html, "html.parser")
+    node = soup.select_one(headline_selector)
+    if node is None:
+        return None
+    text = node.get_text(strip=True)
+    return text or None
+
+
+def crawl_sitemap_outlet(config, fetch_fn):
+    sitemap_xml = fetch_fn(config["sitemap_url"])
+    if sitemap_xml is None:
+        return []
+    candidate_urls = extract_sitemap_urls(sitemap_xml, config["url_filter"])
+    rows = []
+    for url in candidate_urls:
+        if len(rows) >= config["target_count"]:
+            break
+        html = fetch_fn(url)
+        if html is None:
+            continue
+        text = extract_single_headline(html, config["headline_selector"])
+        if text:
+            rows.append({"headline_text": text, "url": url})
+    return rows
