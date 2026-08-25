@@ -11,9 +11,13 @@ pip install -r requirements.txt
 ## Stage 1 — Scraping
 
 ```bash
-python scraper/scrape.py --dry-run   # fetch ~10 headlines/outlet, sanity-check selectors
-python scraper/scrape.py             # full collection run, ~1,000 headlines
+python -m scraper.scrape --dry-run   # fetch ~10 headlines/outlet, sanity-check selectors
+python -m scraper.scrape             # full collection run, ~1,000 headlines
 ```
+
+(Run as a module — `python scraper/scrape.py` directly fails with
+`ModuleNotFoundError: No module named 'scraper'`, since the script's own
+directory, not the project root, ends up on `sys.path`.)
 
 Output: `data/raw/<outlet>.csv` per outlet, plus `data/raw/headlines_combined.csv`.
 

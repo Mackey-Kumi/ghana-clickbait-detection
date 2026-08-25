@@ -1,7 +1,18 @@
+import argparse
+import csv
+import os
 import re
+import time
+from datetime import date
 from urllib.parse import urljoin
 
+import requests
 from bs4 import BeautifulSoup
+
+from scraper.outlets import OUTLETS
+from scraper.utils import USER_AGENT, REQUEST_DELAY_SECONDS, fetch_with_retry, dedupe_rows
+
+CSV_FIELDS = ["outlet", "source_style", "headline_text", "url", "scraped_date"]
 
 
 def extract_headlines(html, headline_selector):
@@ -71,3 +82,65 @@ def crawl_sitemap_outlet(config, fetch_fn):
         if text:
             rows.append({"headline_text": text, "url": url})
     return rows
+
+
+def write_csv(rows, path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_FIELDS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def run(dry_run=False):
+    session = requests.Session()
+    session.headers.update({"User-Agent": USER_AGENT})
+
+    def fetch(url):
+        html = fetch_with_retry(session, url)
+        time.sleep(REQUEST_DELAY_SECONDS)
+        return html
+
+    today = date.today().isoformat()
+    all_rows = []
+    summary = []
+
+    for outlet in OUTLETS:
+        config = dict(outlet)
+        if dry_run:
+            config["target_count"] = 10
+            if config["mode"] == "listing":
+                config["max_pages_per_listing"] = 1
+
+        if config["mode"] == "sitemap":
+            rows = crawl_sitemap_outlet(config, fetch)
+        else:
+            rows = crawl_outlet(config, fetch)
+
+        for row in rows:
+            row["outlet"] = outlet["name"]
+            row["source_style"] = outlet["source_style"]
+            row["scraped_date"] = today
+
+        rows = dedupe_rows(rows)
+        write_csv(rows, f"data/raw/{outlet['name']}.csv")
+        all_rows.extend(rows)
+        summary.append((outlet["name"], len(rows), config["target_count"]))
+
+    write_csv(all_rows, "data/raw/headlines_combined.csv")
+
+    print(f"{'Outlet':<15}{'Collected':<12}{'Target':<10}")
+    for name, collected, target in summary:
+        flag = "" if collected >= target else "  <-- short of target"
+        print(f"{name:<15}{collected:<12}{target:<10}{flag}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true", help="Fetch ~10 headlines/outlet only, for selector sanity-checking")
+    args = parser.parse_args()
+    run(dry_run=args.dry_run)
+
+
+if __name__ == "__main__":
+    main()

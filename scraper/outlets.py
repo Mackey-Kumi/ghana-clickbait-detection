@@ -5,11 +5,22 @@ OUTLETS = [
         "name": "myjoyonline",
         "source_style": "credible",
         "mode": "listing",
-        "listing_urls": ["https://www.myjoyonline.com/category/news/"],
-        "paginate": True,
+        # myjoyonline's /page/N/ URLs serve identical content to page 1 for
+        # "news"/"business"/"sports"/"top-story" (confirmed live: page 2+ returns
+        # 0 new items) -- those categories are fixed curated blocks, not paginated
+        # archives. Aggregating across categories (page 1 only) instead, same
+        # approach as "graphic" below.
+        "listing_urls": [
+            "https://www.myjoyonline.com/category/news/",
+            "https://www.myjoyonline.com/category/business/",
+            "https://www.myjoyonline.com/category/sports/",
+            "https://www.myjoyonline.com/category/top-story/",
+            "https://www.myjoyonline.com/category/arts-culture/",
+        ],
+        "paginate": False,
         "headline_selector": "div.home-section-story-list > a",
         "target_count": 155,
-        "max_pages_per_listing": 40,
+        "max_pages_per_listing": 1,
     },
     {
         "name": "graphic",
@@ -28,7 +39,10 @@ OUTLETS = [
         "name": "citinewsroom",
         "source_style": "credible",
         "mode": "listing",
-        "listing_urls": ["https://citinewsroom.com/category/top-stories/"],
+        # "top-stories" is a fixed curated block on citinewsroom too (page 2+
+        # returns identical content to page 1, confirmed live). "news" paginates
+        # cleanly -- verified 12 pages deep, 15 genuinely new items every page.
+        "listing_urls": ["https://citinewsroom.com/category/news/"],
         "paginate": True,
         "headline_selector": "h3.jeg_post_title > a",
         "target_count": 155,
