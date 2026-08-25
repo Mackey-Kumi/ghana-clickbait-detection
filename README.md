@@ -27,6 +27,10 @@ Output: `data/raw/<outlet>.csv` per outlet, plus `data/raw/headlines_combined.cs
 `data/processed/second_annotator_subset.csv` (the 250-headline blind subset)
 are already generated. Codebook: `docs/ANNOTATION_CODEBOOK.md`.
 
+Send your second annotator `second_annotator_subset.xlsx`, not the `.csv` —
+same 250 headlines, but the `label` column has a dropdown (Clickbait /
+Informative / Ambiguous) instead of requiring them to type the label by hand.
+
 ```bash
 python -m annotate.verify              # your verification pass -- resumable, stop/start anytime
 ```

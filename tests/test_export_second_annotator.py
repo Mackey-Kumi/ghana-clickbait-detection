@@ -1,4 +1,6 @@
-from annotate.export_second_annotator import build_subset
+from openpyxl import load_workbook
+
+from annotate.export_second_annotator import build_subset, write_subset_xlsx, LABEL_CHOICES
 
 
 def test_build_subset_produces_target_total():
@@ -39,3 +41,36 @@ def test_build_subset_is_reproducible_with_same_seed():
     subset1, _ = build_subset(rows, target_total=5, seed=7)
     subset2, _ = build_subset(rows, target_total=5, seed=7)
     assert subset1 == subset2
+
+
+def test_write_subset_xlsx_contains_headers_and_rows(tmp_path):
+    subset_rows = [
+        {"id": "H001", "headline_text": "First headline", "label": ""},
+        {"id": "H002", "headline_text": "Second headline", "label": ""},
+    ]
+    path = str(tmp_path / "subset.xlsx")
+    write_subset_xlsx(subset_rows, path)
+
+    wb = load_workbook(path)
+    ws = wb.active
+    assert [c.value for c in ws[1]] == ["id", "headline_text", "label"]
+    assert [c.value for c in ws[2]] == ["H001", "First headline", None]
+    assert [c.value for c in ws[3]] == ["H002", "Second headline", None]
+
+
+def test_write_subset_xlsx_adds_label_dropdown_on_every_data_row(tmp_path):
+    subset_rows = [
+        {"id": "H001", "headline_text": "First headline", "label": ""},
+        {"id": "H002", "headline_text": "Second headline", "label": ""},
+    ]
+    path = str(tmp_path / "subset.xlsx")
+    write_subset_xlsx(subset_rows, path)
+
+    wb = load_workbook(path)
+    ws = wb.active
+    validations = ws.data_validations.dataValidation
+    assert len(validations) == 1
+    dv = validations[0]
+    assert dv.type == "list"
+    assert dv.formula1 == '"' + ",".join(LABEL_CHOICES) + '"'
+    assert "C2:C3" in str(dv.sqref)
