@@ -1,3 +1,5 @@
+from openpyxl import Workbook
+
 from annotate.kappa import cohens_kappa, load_paired_labels
 from annotate.csv_io import write_csv_rows
 
@@ -52,3 +54,22 @@ def test_load_paired_labels_skips_unfilled_second_annotator_rows(tmp_path):
     labels_a, labels_b = load_paired_labels(verified_path, mapping_path, second_path)
     assert labels_a == []
     assert labels_b == []
+
+
+def test_load_paired_labels_reads_xlsx_second_annotator_file(tmp_path):
+    verified_path = str(tmp_path / "verified.csv")
+    mapping_path = str(tmp_path / "mapping.csv")
+    second_path = str(tmp_path / "second.xlsx")
+
+    write_csv_rows([{"url": "https://a.com/1/", "human_label": "Clickbait"}], verified_path, ["url", "human_label"])
+    write_csv_rows([{"id": "H001", "url": "https://a.com/1/", "outlet": "a", "source_style": "credible"}], mapping_path, ["id", "url", "outlet", "source_style"])
+
+    wb = Workbook()
+    ws = wb.active
+    ws.append(["id", "headline_text", "label"])
+    ws.append(["H001", "H1", "Informative"])
+    wb.save(second_path)
+
+    labels_a, labels_b = load_paired_labels(verified_path, mapping_path, second_path)
+    assert labels_a == ["Clickbait"]
+    assert labels_b == ["Informative"]

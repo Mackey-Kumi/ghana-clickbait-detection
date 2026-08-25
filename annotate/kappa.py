@@ -1,6 +1,6 @@
 import sys
 
-from annotate.csv_io import read_csv_rows
+from annotate.csv_io import read_csv_rows, read_table_rows
 
 
 def cohens_kappa(labels_a, labels_b):
@@ -21,7 +21,7 @@ def cohens_kappa(labels_a, labels_b):
 def load_paired_labels(verified_path, mapping_path, second_annotator_completed_path):
     verified_rows = {row["url"]: row["human_label"] for row in read_csv_rows(verified_path)}
     mapping_rows = {row["id"]: row["url"] for row in read_csv_rows(mapping_path)}
-    second_rows = read_csv_rows(second_annotator_completed_path)
+    second_rows = read_table_rows(second_annotator_completed_path)
 
     labels_a = []
     labels_b = []
