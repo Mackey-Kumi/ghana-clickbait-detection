@@ -47,10 +47,27 @@ python -m annotate.merge_final         # only after your verify.py pass is 100% 
 Output: `data/processed/annotated_headlines.csv` — 1,000 labeled headlines
 (Clickbait/Informative/Ambiguous), ready for Stage 3 modeling.
 
+## Stage 3 — Baseline model
+
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/baseline.ipynb
+```
+
+TF-IDF (unigrams+bigrams) + Logistic Regression, class-balanced. Reuses
+`models.data.load_labeled_dataset()`/`make_train_test_split()` (seed 42) so
+Stages 4 and 5 evaluate on the identical test set. Includes a held-out-outlet
+generalization check (train on 6 outlets, test on the 7th) alongside the
+standard 80/20 split, and a top-features table. Output:
+`notebooks/baseline_confusion_matrix.png` plus the full results inline in the
+notebook.
+
 ## Project layout
 
 - `scraper/` — headline collection (Stage 1)
+- `annotate/` — annotation pipeline (Stage 2)
+- `models/` — shared data-loading/splitting logic reused across Stage 3-5
+  notebooks (tested — see `tests/test_data.py`)
 - `data/raw/` — scraped, unlabeled headlines + data card
-- `data/processed/` — annotated data (Stage 2)
+- `data/processed/` — annotated data (Stage 2) and final labeled dataset
 - `notebooks/` — modeling and EDA (Stage 3+)
 - `app/` — Streamlit demo (Stage 5)
