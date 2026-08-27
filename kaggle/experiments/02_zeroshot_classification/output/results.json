@@ -1,0 +1,154 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "hypothesis_template": "This news headline is {}.",
+  "standard_split": {
+    "classification_report": {
+      "Informative": {
+        "precision": 0.8020304568527918,
+        "recall": 0.9937106918238994,
+        "f1-score": 0.8876404494382022,
+        "support": 159.0
+      },
+      "Clickbait": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 39.0
+      },
+      "accuracy": 0.797979797979798,
+      "macro avg": {
+        "precision": 0.4010152284263959,
+        "recall": 0.4968553459119497,
+        "f1-score": 0.4438202247191011,
+        "support": 198.0
+      },
+      "weighted avg": {
+        "precision": 0.6440547608060299,
+        "recall": 0.797979797979798,
+        "f1-score": 0.7128021790943139,
+        "support": 198.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        158,
+        1
+      ],
+      [
+        39,
+        0
+      ]
+    ],
+    "accuracy": 0.797979797979798,
+    "macro_f1": 0.4438202247191011,
+    "clickbait_precision": 0.0,
+    "clickbait_recall": 0.0,
+    "inference_time_seconds": 4.401972532272339
+  },
+  "standard_split_rich_labels": {
+    "candidate_labels": [
+      "a sensationalized clickbait headline designed to provoke curiosity",
+      "a factual, informative news headline"
+    ],
+    "classification_report": {
+      "Informative": {
+        "precision": 0.8588957055214724,
+        "recall": 0.8805031446540881,
+        "f1-score": 0.8695652173913043,
+        "support": 159.0
+      },
+      "Clickbait": {
+        "precision": 0.45714285714285713,
+        "recall": 0.41025641025641024,
+        "f1-score": 0.43243243243243246,
+        "support": 39.0
+      },
+      "accuracy": 0.7878787878787878,
+      "macro avg": {
+        "precision": 0.6580192813321648,
+        "recall": 0.6453797774552492,
+        "f1-score": 0.6509988249118683,
+        "support": 198.0
+      },
+      "weighted avg": {
+        "precision": 0.779762568719624,
+        "recall": 0.7878787878787878,
+        "f1-score": 0.7834633052024356,
+        "support": 198.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        140,
+        19
+      ],
+      [
+        23,
+        16
+      ]
+    ],
+    "accuracy": 0.7878787878787878,
+    "macro_f1": 0.6509988249118683,
+    "clickbait_precision": 0.45714285714285713,
+    "clickbait_recall": 0.41025641025641024,
+    "inference_time_seconds": 4.19922661781311
+  },
+  "per_outlet": [
+    {
+      "outlet": "citinewsroom",
+      "source_style": "credible",
+      "n": 154,
+      "accuracy": 0.961,
+      "macro_f1": 0.49,
+      "clickbait_recall": 0.0
+    },
+    {
+      "outlet": "ghpage",
+      "source_style": "clickbait_heavy",
+      "n": 164,
+      "accuracy": 0.543,
+      "macro_f1": 0.352,
+      "clickbait_recall": 0.0
+    },
+    {
+      "outlet": "gna",
+      "source_style": "credible",
+      "n": 155,
+      "accuracy": 0.987,
+      "macro_f1": 0.497,
+      "clickbait_recall": 0.0
+    },
+    {
+      "outlet": "graphic",
+      "source_style": "credible",
+      "n": 35,
+      "accuracy": 0.943,
+      "macro_f1": 0.485,
+      "clickbait_recall": 0.0
+    },
+    {
+      "outlet": "myjoyonline",
+      "source_style": "credible",
+      "n": 151,
+      "accuracy": 0.967,
+      "macro_f1": 0.492,
+      "clickbait_recall": 0.0
+    },
+    {
+      "outlet": "yen",
+      "source_style": "clickbait_heavy",
+      "n": 166,
+      "accuracy": 0.765,
+      "macro_f1": 0.433,
+      "clickbait_recall": 0.0
+    },
+    {
+      "outlet": "zionfelix",
+      "source_style": "clickbait_heavy",
+      "n": 165,
+      "accuracy": 0.588,
+      "macro_f1": 0.37,
+      "clickbait_recall": 0.0
+    }
+  ]
+}

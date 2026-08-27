@@ -78,15 +78,38 @@ Beats the Stage 3 baseline on every metric (accuracy 0.783 vs 0.737, macro F1
 to unseen clickbait-heavy outlets in the held-out-outlet check (Clickbait
 recall 0.736 vs the baseline's 0.453).
 
+## Stage 5 — Zero-shot LLM classification
+
+Same remote-Kaggle pattern as Stage 4, inference only (no training):
+
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/zeroshot.ipynb
+```
+
+`facebook/bart-large-mnli`, no fine-tuning. The proposal's literal candidate
+labels (`"clickbait"`/`"informative"`) collapse almost completely (Clickbait
+precision/recall both 0.000) — but that's substantially a label-phrasing
+artifact, not a hard capability ceiling: richer descriptive candidate labels
+on the identical test set lift Clickbait recall to 0.410 and macro F1 to
+0.651 (essentially tied with the Stage 3 baseline), while still falling
+short of fine-tuned DistilBERT (0.714) either way — the annotated dataset
+and fine-tuning effort demonstrably earn their keep. See
+`kaggle/README.md`'s experiment table and `notebooks/zeroshot.ipynb` for the
+full write-up.
+
+The Streamlit demo app (the proposal's other Stage 5 deliverable) is
+deferred for now — it's a product/polish piece that doesn't feed the
+research comparison, unlike the model itself.
+
 ## Project layout
 
 - `scraper/` — headline collection (Stage 1)
 - `annotate/` — annotation pipeline (Stage 2)
 - `models/` — shared data-loading/splitting logic reused across Stage 3-5
   notebooks (tested — see `tests/test_data.py`)
-- `kaggle/` — remote GPU training via the Kaggle CLI (Stage 4+; see
+- `kaggle/` — remote GPU/inference via the Kaggle CLI (Stage 4-5; see
   `kaggle/README.md`)
 - `data/raw/` — scraped, unlabeled headlines + data card
 - `data/processed/` — annotated data (Stage 2) and final labeled dataset
 - `notebooks/` — modeling and EDA (Stage 3+)
-- `app/` — Streamlit demo (Stage 5)
+- `app/` — Streamlit demo (deferred — see Stage 5 above)
