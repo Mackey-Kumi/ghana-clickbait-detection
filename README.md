@@ -61,12 +61,31 @@ standard 80/20 split, and a top-features table. Output:
 `notebooks/baseline_confusion_matrix.png` plus the full results inline in the
 notebook.
 
+## Stage 4 — Fine-tuned DistilBERT
+
+This machine has no GPU, so training runs remotely on a free Kaggle T4 —
+see `kaggle/README.md` for the full push/poll/pull workflow and how to
+re-run it. Results are already pulled down to
+`kaggle/experiments/01_finetune_distilbert/output/`; to view the write-up
+without re-running anything:
+
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/transformer.ipynb
+```
+
+Beats the Stage 3 baseline on every metric (accuracy 0.783 vs 0.737, macro F1
+0.714 vs 0.647, Clickbait recall 0.744 vs 0.590) and generalizes much better
+to unseen clickbait-heavy outlets in the held-out-outlet check (Clickbait
+recall 0.736 vs the baseline's 0.453).
+
 ## Project layout
 
 - `scraper/` — headline collection (Stage 1)
 - `annotate/` — annotation pipeline (Stage 2)
 - `models/` — shared data-loading/splitting logic reused across Stage 3-5
   notebooks (tested — see `tests/test_data.py`)
+- `kaggle/` — remote GPU training via the Kaggle CLI (Stage 4+; see
+  `kaggle/README.md`)
 - `data/raw/` — scraped, unlabeled headlines + data card
 - `data/processed/` — annotated data (Stage 2) and final labeled dataset
 - `notebooks/` — modeling and EDA (Stage 3+)

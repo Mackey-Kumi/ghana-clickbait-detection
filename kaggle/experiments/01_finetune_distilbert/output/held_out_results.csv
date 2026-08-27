@@ -1,0 +1,8 @@
+held_out_outlet,source_style,n_test,accuracy,macro_f1,clickbait_recall
+citinewsroom,credible,154,0.968,0.635,0.167
+ghpage,clickbait_heavy,164,0.701,0.701,0.8
+gna,credible,155,0.994,0.832,0.5
+graphic,credible,35,0.971,0.826,0.5
+myjoyonline,credible,151,0.914,0.635,0.6
+yen,clickbait_heavy,166,0.614,0.552,0.513
+zionfelix,clickbait_heavy,165,0.691,0.69,0.896

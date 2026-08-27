@@ -1,0 +1,104 @@
+{
+  "standard_split": {
+    "classification_report": {
+      "Informative": {
+        "precision": 0.9264705882352942,
+        "recall": 0.7924528301886793,
+        "f1-score": 0.8542372881355932,
+        "support": 159.0
+      },
+      "Clickbait": {
+        "precision": 0.46774193548387094,
+        "recall": 0.7435897435897436,
+        "f1-score": 0.5742574257425742,
+        "support": 39.0
+      },
+      "accuracy": 0.7828282828282829,
+      "macro avg": {
+        "precision": 0.6971062618595826,
+        "recall": 0.7680212868892115,
+        "f1-score": 0.7142473569390837,
+        "support": 198.0
+      },
+      "weighted avg": {
+        "precision": 0.836114944511529,
+        "recall": 0.7828282828282829,
+        "f1-score": 0.7990897394824228,
+        "support": 198.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        126,
+        33
+      ],
+      [
+        10,
+        29
+      ]
+    ],
+    "accuracy": 0.7828282828282829,
+    "macro_f1": 0.7142473569390837,
+    "clickbait_precision": 0.46774193548387094,
+    "clickbait_recall": 0.7435897435897436,
+    "train_time_seconds": 13.748378276824951
+  },
+  "held_out_outlet": [
+    {
+      "held_out_outlet": "citinewsroom",
+      "source_style": "credible",
+      "n_test": 154,
+      "accuracy": 0.968,
+      "macro_f1": 0.635,
+      "clickbait_recall": 0.167
+    },
+    {
+      "held_out_outlet": "ghpage",
+      "source_style": "clickbait_heavy",
+      "n_test": 164,
+      "accuracy": 0.701,
+      "macro_f1": 0.701,
+      "clickbait_recall": 0.8
+    },
+    {
+      "held_out_outlet": "gna",
+      "source_style": "credible",
+      "n_test": 155,
+      "accuracy": 0.994,
+      "macro_f1": 0.832,
+      "clickbait_recall": 0.5
+    },
+    {
+      "held_out_outlet": "graphic",
+      "source_style": "credible",
+      "n_test": 35,
+      "accuracy": 0.971,
+      "macro_f1": 0.826,
+      "clickbait_recall": 0.5
+    },
+    {
+      "held_out_outlet": "myjoyonline",
+      "source_style": "credible",
+      "n_test": 151,
+      "accuracy": 0.914,
+      "macro_f1": 0.635,
+      "clickbait_recall": 0.6
+    },
+    {
+      "held_out_outlet": "yen",
+      "source_style": "clickbait_heavy",
+      "n_test": 166,
+      "accuracy": 0.614,
+      "macro_f1": 0.552,
+      "clickbait_recall": 0.513
+    },
+    {
+      "held_out_outlet": "zionfelix",
+      "source_style": "clickbait_heavy",
+      "n_test": 165,
+      "accuracy": 0.691,
+      "macro_f1": 0.69,
+      "clickbait_recall": 0.896
+    }
+  ]
+}
