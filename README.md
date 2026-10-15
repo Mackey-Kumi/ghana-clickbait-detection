@@ -25,7 +25,7 @@ dataset, not evidence of real classification skill — see
 `notebooks/zeroshot.ipynb`.
 
 Fine-tuned DistilBERT wins outright, and also generalizes best to headlines
-from outlets it never trained on (held-out-outlet Clickbait recall 0.744 vs.
+from outlets it never trained on (held-out-outlet Clickbait recall 0.736 vs.
 the baseline's 0.453). Full methodology and discussion in each stage's
 notebook, linked below.
 
@@ -110,6 +110,39 @@ jupyter nbconvert --to notebook --execute --inplace notebooks/zeroshot.ipynb
 candidate-label phrasing — see `kaggle/README.md`'s experiment table and
 `notebooks/zeroshot.ipynb` for the full write-up.
 
+## Error analysis
+
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/error_analysis.ipynb
+```
+
+Every headline the baseline gets wrong on the shared test set, broken down by
+outlet, with a summary of the error patterns. Discussed in the manuscript's
+Section 6.
+
+## Research documentation
+
+| Document | Contents |
+|---|---|
+| `report/` | The research manuscript (PDF) |
+| `data/raw/DATA_CARD.md` | Sources, collection method, label distribution, annotation process, known limitations |
+| `docs/ANNOTATION_CODEBOOK.md` | Labelling guidelines, including the three revisions |
+| `docs/MODEL_CARD.md` | All three models: training setup, metrics, intended use, failure modes |
+| `docs/LITERATURE_MATRIX.md` | Related work and how each paper shaped a decision here |
+| `docs/ETHICS.md` | Scraping ethics, annotator anonymity, data access, responsible use |
+| `docs/AI_USE_DISCLOSURE.md` | Where AI was used and how its output was verified |
+| `docs/FAILURE_LOG.md` | What went wrong at each stage and how it was handled |
+| `docs/REPRODUCIBILITY.md` | Reproducibility checklist and full re-run steps |
+
+## Data access
+
+Everything needed to reproduce the results is in this repository: the scraped
+headlines (`data/raw/`) and all labels (`data/processed/`). The data is public
+news headlines and labels derived from them, with no personal data, restricted
+datasets or credentials. Re-running the scraper is optional and will give
+different headlines, since the sites change daily. Check each site's current
+`robots.txt` first. See `docs/ETHICS.md`.
+
 ## Project layout
 
 - `scraper/` — headline collection (Stage 1)
@@ -121,7 +154,9 @@ candidate-label phrasing — see `kaggle/README.md`'s experiment table and
 - `data/raw/` — scraped, unlabeled headlines + data card
 - `data/processed/` — annotated data (Stage 2) and final labeled dataset
 - `notebooks/` — modeling, evaluation, and write-up for each stage
-- `docs/` — annotation codebook
+- `docs/` — codebook, model card, literature matrix, ethics, AI-use
+  disclosure, failure log, reproducibility checklist
+- `report/` — research manuscript
 - `tests/` — unit tests for the scraping/annotation/data-loading pipeline
 
 ## License
